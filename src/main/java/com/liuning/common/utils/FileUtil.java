@@ -1,10 +1,25 @@
 package com.liuning.common.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * 
+ * @author Administrator
+ *
+ */
 
 public class FileUtil{
 	public static Logger log = Logger.getLogger(FileUtil.class); 
@@ -103,4 +118,32 @@ public class FileUtil{
 		}
 		
 	}
+	
+/*	public static List fileToBean(String fileName,Constructor constructor) throws IOException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		File file = new File(fileName);
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		String lineString=null;
+		List  list = new ArrayList();
+		while((lineString =  bufferedReader.readLine()) !=null){
+			String[] split = lineString.split("\\|");
+			Object object = constructor.newInstance(split);
+			list.add(object);
+		}
+		return list;
+	}*/
+	public static List filetobean(String filename,Constructor constructor) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		File file = new File(filename);
+		FileReader reader = new FileReader(file);//读取文件
+		BufferedReader bufferedReader = new BufferedReader(reader);//字符输入流
+		String linestring=null;//创建一个为空的字符串
+		List list=new ArrayList();//创建集合
+		while((linestring=bufferedReader.readLine())!=null){//用字符输入流去一行行读取然后赋值到linestring中 直到读取到位空的时候结束
+			String[] split = linestring.split("\\|");
+			Object object = constructor.newInstance(split);
+			list.add(object);
+		}
+		return list;
+		
+	}
+	
 }
